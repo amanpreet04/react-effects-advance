@@ -1,47 +1,28 @@
-import { useState } from "react";
-
-import questions from "../questions";
+import { useContext } from "react";
 import Header from "./components/Header";
 import Question from "./components/Question";
-const MAX_QUESTIONS = questions.length;
-
-function getRandomNumber() {
-  return Math.floor(Math.random() * MAX_QUESTIONS);
-}
+import QuestionContextProvider, {
+  QuestionContext,
+} from "./store/question-context-store";
 
 function App() {
-  const [viewedQuestions, setViewedQuestions] = useState([]);
+  return (
+    <QuestionContextProvider>
+      <Header heading="React Quiz" />
+      <QuestionContextContainer />
+    </QuestionContextProvider>
+  );
+}
 
-  function addToViewedQuestions(id) {
-    setViewedQuestions(id);
-  }
-
-  function getQuestion() {
-    let counter = MAX_QUESTIONS;
-    while (counter--) {
-      const randomIndex = getRandomNumber();
-      const randomQuestionId = questions[randomIndex].id;
-      if (!viewedQuestions.includes(randomQuestionId)) {
-        return randomQuestionId;
-      }
-    }
-    return false;
-  }
-
-  const questionId = getQuestion();
-  let content;
+function QuestionContextContainer() {
+  const { getNextQuestionId } = useContext(QuestionContext);
+  const questionId = getNextQuestionId();
   if (questionId) {
     content = <Question questionId={questionId} />;
   } else {
     console.log("QUESTIONS KHATAM");
   }
-
-  return (
-    <>
-      <Header heading="React Quiz" />
-      {content}
-    </>
-  );
+  return <>{content}</>;
 }
 
 export default App;
