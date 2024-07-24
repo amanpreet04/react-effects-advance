@@ -6,7 +6,10 @@ const MAX_QUESTIONS = questions.length;
 export const QuestionContext = createContext({
   answeredQuestions: [],
   skippedQuestions: [],
+  currentQuestionId: null,
   getNextQuestionId: () => {},
+  setCurrentQuestionId: () => {},
+  addToViewedQuestions: () => {},
 });
 
 function getRandomNumber() {
@@ -15,9 +18,18 @@ function getRandomNumber() {
 
 export default function QuestionContextProvider({ children }) {
   const [viewedQuestions, setViewedQuestions] = useState([]);
+  const [currentQuestionId, setCurrentQuestionId] = useState(null);
 
-  function addToViewedQuestions(id) {
-    setViewedQuestions((prevViewedQuestions) => [...prevViewedQuestions, id]);
+  function addToViewedQuestions(id, response) {
+    setCurrentQuestionId(id);
+    setViewedQuestions((prevViewedQuestions) => [
+      ...prevViewedQuestions,
+      { questionId: id, response },
+    ]);
+  }
+
+  function handleCurrentQuestion(id) {
+    setCurrentQuestionId(id);
   }
 
   function getQuestion() {
@@ -37,7 +49,10 @@ export default function QuestionContextProvider({ children }) {
   const contextValue = {
     answeredQuestions: [],
     skippedQuestions: [],
+    currentQuestionId: currentQuestionId,
     getNextQuestionId: getQuestion,
+    setCurrentQuestionId: handleCurrentQuestion,
+    addToViewedQuestions,
   };
 
   return (
