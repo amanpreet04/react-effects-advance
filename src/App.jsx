@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import Header from "./components/Header";
 import Question from "./components/Question";
 import QuestionContextProvider, {
@@ -15,10 +15,19 @@ function App() {
 }
 
 function QuestionContextContainer() {
-  const { getNextQuestionId } = useContext(QuestionContext);
+  const { getNextQuestionId, setCurrentQuestionId } =
+    useContext(QuestionContext);
   const questionId = getNextQuestionId();
+  useEffect(() => {
+    if (questionId) {
+      setCurrentQuestionId(questionId);
+    }
+  }, [questionId, setCurrentQuestionId]);
+
+  let content;
+
   if (questionId) {
-    content = <Question questionId={questionId} />;
+    content = <Question />;
   } else {
     console.log("QUESTIONS KHATAM");
   }
