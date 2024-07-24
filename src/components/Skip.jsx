@@ -6,7 +6,11 @@ export default function Skip({ label }) {
 
   return (
     <div id="skip-action">
-      <button>{label}</button>
+      <button
+        onClick={() => addToViewedQuestions(currentQuestionId, "skipped")}
+      >
+        {label}
+      </button>
     </div>
   );
 }
