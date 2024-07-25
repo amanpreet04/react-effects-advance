@@ -14,24 +14,4 @@ function App() {
   );
 }
 
-function QuestionContextContainer() {
-  const { getNextQuestionId, setCurrentQuestionId } =
-    useContext(QuestionContext);
-  const questionId = getNextQuestionId();
-  useEffect(() => {
-    if (questionId) {
-      setCurrentQuestionId(questionId);
-    }
-  }, [questionId, setCurrentQuestionId]);
-
-  let content;
-
-  if (questionId) {
-    content = <Question />;
-  } else {
-    console.log("QUESTIONS KHATAM");
-  }
-  return <>{content}</>;
-}
-
 export default App;
