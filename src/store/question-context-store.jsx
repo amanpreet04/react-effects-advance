@@ -32,7 +32,7 @@ export default function QuestionContextProvider({ children }) {
     setCurrentQuestionId(id);
   }
 
-  function getQuestion() {
+  function getNextQuestionId() {
     let counter = MAX_QUESTIONS;
     while (counter--) {
       const randomIndex = getRandomNumber();
@@ -40,6 +40,7 @@ export default function QuestionContextProvider({ children }) {
       console.log(randomQuestionId);
       console.log(viewedQuestions);
       if (!viewedQuestions.includes(randomQuestionId)) {
+        // handleCurrentQuestion(randomQuestionId);
         return randomQuestionId;
       }
     }
@@ -50,7 +51,7 @@ export default function QuestionContextProvider({ children }) {
     answeredQuestions: [],
     skippedQuestions: [],
     currentQuestionId: currentQuestionId,
-    getNextQuestionId: getQuestion,
+    getNextQuestionId,
     setCurrentQuestionId: handleCurrentQuestion,
     addToViewedQuestions,
   };
