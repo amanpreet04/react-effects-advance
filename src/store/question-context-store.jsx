@@ -1,11 +1,9 @@
 import { createContext, useState } from "react";
-import Question from "../components/Question";
 import questions from "../../questions";
 const MAX_QUESTIONS = questions.length;
 
 export const QuestionContext = createContext({
-  answeredQuestions: [],
-  skippedQuestions: [],
+  viewedQuestions: [],
   currentQuestionId: null,
   getNextQuestionId: () => {},
   setCurrentQuestionId: () => {},
@@ -18,10 +16,11 @@ function getRandomNumber() {
 
 export default function QuestionContextProvider({ children }) {
   const [viewedQuestions, setViewedQuestions] = useState([]);
-  const [currentQuestionId, setCurrentQuestionId] = useState(null);
+  const [currentQuestionId, setCurrentQuestionId] = useState(
+    getNextQuestionId()
+  );
 
   function addToViewedQuestions(id, response) {
-    setCurrentQuestionId(id);
     setViewedQuestions((prevViewedQuestions) => [
       ...prevViewedQuestions,
       { questionId: id, response },
@@ -40,7 +39,6 @@ export default function QuestionContextProvider({ children }) {
       console.log(randomQuestionId);
       console.log(viewedQuestions);
       if (!viewedQuestions.includes(randomQuestionId)) {
-        // handleCurrentQuestion(randomQuestionId);
         return randomQuestionId;
       }
     }
@@ -48,8 +46,7 @@ export default function QuestionContextProvider({ children }) {
   }
 
   const contextValue = {
-    answeredQuestions: [],
-    skippedQuestions: [],
+    viewedQuestions,
     currentQuestionId: currentQuestionId,
     getNextQuestionId,
     setCurrentQuestionId: handleCurrentQuestion,
