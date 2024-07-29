@@ -4,19 +4,16 @@ export default function QuizTimer({ timeout, onTimeout }) {
   const [remainingTime, setRemainingTime] = useState(timeout);
 
   useEffect(() => {
-    console.log("Setting timeout");
     const timerId = setTimeout(onTimeout, timeout);
     return () => clearTimeout(timerId);
   }, [onTimeout, timeout]);
 
   useEffect(() => {
-    console.log("Setting Interval");
-
-    const intervalId = setInterval(() => {
+    const interval = setInterval(() => {
       setRemainingTime((prevTimeRemaining) => prevTimeRemaining - 100);
     }, 100);
 
-    return () => clearInterval(intervalId);
+    return () => clearTimeout(interval);
   }, []);
 
   return <progress max={timeout} value={remainingTime} />;
